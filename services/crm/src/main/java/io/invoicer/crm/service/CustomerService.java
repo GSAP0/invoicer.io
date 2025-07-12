@@ -3,7 +3,7 @@ package io.invoicer.crm.service;
 import io.invoicer.crm.dto.CustomerDto;
 import io.invoicer.crm.model.Customer;
 import io.invoicer.crm.repository.CustomerRepository;
-import io.invoicer.commons.events.CustomerCreatedEvent;
+import io.invoicer.commons.CustomerCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package io.invoicer.commons.events;
+package io.invoicer.commons;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
