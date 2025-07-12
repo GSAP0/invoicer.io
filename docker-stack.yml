@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+
+  api-gateway:
+    image: ghcr.io/myorg/api-gateway:latest
+    ports:
+      - "80:8080"
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+    networks:
+      - backend
+
+  crm-service:
+    image: ghcr.io/myorg/crm-service:latest
+    deploy:
+      replicas: 2
+    networks:
+      - backend
+
+  billing-service:
+    image: ghcr.io/myorg/billing-service:latest
+    deploy:
+      replicas: 2
+    networks:
+      - backend
+
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: main
+    volumes:
+      - mysql_data:/var/lib/mysql
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - backend
+
+  redis:
+    image: redis:7
+    networks:
+      - backend
+
+  kafka:
+    image: bitnami/kafka:latest
+    environment:
+      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+    depends_on:
+      - zookeeper
+    networks:
+      - backend
+
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    networks:
+      - backend
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0
+    command: start-dev --import-realm
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: adminpass
+    volumes:
+      - ./docker/keycloak/keycloak-realm.json:/opt/keycloak/data/import/realm.json
+    ports:
+      - "8081:8080"
+    networks:
+      - backend
+
+volumes:
+  mysql_data:
+
+networks:
+  backend:
