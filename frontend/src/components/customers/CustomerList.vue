@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 style="margin-top: 0">Customers</h1>
+
     <n-data-table bordered
                   :loading size="small"
                   :columns="columns"
@@ -13,19 +13,26 @@
 
 <script setup>
 import {h, ref} from 'vue'
-import {getCustomers} from '@/api/customers'
-import {NButton} from "naive-ui";
+import {getCustomers, deleteCustomer} from '@/api/customers'
 import RowActionDropdown from "@/components/RowActionDropdown.vue";
+import {useRouter} from "vue-router";
+import {useMessage} from "naive-ui";
+
+const router = useRouter()
+const message = useMessage()
 
 const loading = ref(true)
 const customers = ref([])
 
 const rowKey = (row) => row.id
 
-getCustomers()
-  .then((res) => customers.value = res.data)
-  .finally(() => loading.value = false)
+function fetchCustomers() {
+  return getCustomers()
+    .then((res) => customers.value = res.data)
+    .finally(() => loading.value = false)
+}
 
+fetchCustomers()
 
 const columns = [
   {
@@ -40,21 +47,28 @@ const columns = [
     key: 'name'
   },
   {
+    title: 'Email',
+    key: 'email'
+  },
+  {
     title: 'Action',
     key: 'actions',
     render(row) {
       return h(RowActionDropdown, {
         row,
-        onAction: ({ action, row }) => {
+        onAction: ({action, row}) => {
           switch (action) {
             case 'view':
-              // open view modal or navigate
+              router.push(`/customers/${row.id}`)
               break
             case 'edit':
-              // open edit form
+              router.push(`/customers/${row.id}/edit`)
               break
             case 'delete':
-              // show confirm dialog
+              deleteCustomer(row.id)
+                .then(fetchCustomers)
+                .then(() => message.success("Customer deleted"))
+
               break
           }
         }

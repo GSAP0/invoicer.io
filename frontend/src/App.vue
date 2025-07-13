@@ -6,9 +6,13 @@ import DefaultLayout from "@/layouts/DefaultLayout.vue";
 <template>
   <DefaultLayout>
     <n-config-provider>
-    <n-dialog-provider>
-      <RouterView/>
-    </n-dialog-provider>
+      <n-loading-bar-provider>
+      <n-message-provider>
+        <n-dialog-provider>
+          <RouterView/>
+        </n-dialog-provider>
+      </n-message-provider>
+      </n-loading-bar-provider>
     </n-config-provider>
   </DefaultLayout>
 </template>

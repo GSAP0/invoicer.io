@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/customers")
@@ -23,10 +24,9 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Customer> getById(@PathVariable String id) {
-        return customerService.getById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Customer> getById(@PathVariable("id") String id) {
+        Optional<Customer> c = customerService.getById(id);
+        return c.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping
@@ -35,13 +35,13 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Customer> update(@PathVariable String id,
+    public ResponseEntity<Customer> update(@PathVariable("id") String id,
                                            @Validated @RequestBody CustomerDto dto) {
         return ResponseEntity.ok(customerService.update(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") String id) {
         customerService.delete(id);
         return ResponseEntity.noContent().build();
     }
