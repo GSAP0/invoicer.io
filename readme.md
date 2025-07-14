@@ -1,5 +1,6 @@
 # Invoicer
 
+
 Invoicer is a modular, microservice-based platform designed for invoicing, billing, customer management (CRM), and time tracking. It follows a clean architecture with independent services that communicate via REST and Kafka, and a shared `commons` module for interoperability.
 
 ---
