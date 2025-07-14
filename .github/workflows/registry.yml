@@ -1,0 +1,67 @@
+name: Deploy Invoicer Service
+
+on:
+  push:
+    paths:
+      - 'services/**'
+      - 'common/**'
+      - 'gateway/**'
+      - 'docker/**'
+      - '.github/workflows/**'
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      REGISTRY: ghcr.io
+      IMAGE_NAME: ${{ github.repository }}
+      DOCKER_CONTEXT: .
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Determine changed service
+        id: service
+        run: |
+          echo "SERVICE="
+          if git diff --name-only HEAD^ HEAD | grep -q '^services/crm/'; then
+            echo "SERVICE=crm" >> $GITHUB_OUTPUT
+          elif git diff --name-only HEAD^ HEAD | grep -q '^services/auth/'; then
+            echo "SERVICE=auth" >> $GITHUB_OUTPUT
+          elif git diff --name-only HEAD^ HEAD | grep -q '^gateway/'; then
+            echo "SERVICE=gateway" >> $GITHUB_OUTPUT
+          else
+            echo "No known service changed, exiting."
+            exit 1
+          fi
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t $REGISTRY/${{ github.repository }}-${{ steps.service.outputs.SERVICE }}:latest \
+            -f services/${{ steps.service.outputs.SERVICE }}/Dockerfile $DOCKER_CONTEXT
+          docker push $REGISTRY/${{ github.repository }}-${{ steps.service.outputs.SERVICE }}:latest
+
+      #- name: SSH and update Swarm service
+      #  uses: appleboy/ssh-action@v1.0.0
+      #  with:
+      #    host: ${{ secrets.SWARM_HOST }}
+      #    username: ${{ secrets.SSH_USER }}
+      #    key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #    script: |
+      #      docker service update \
+      #        --image ghcr.io/${{ github.repository }}-${{ steps.service.outputs.SERVICE }}:latest \
+      #        invoicer_${{ steps.service.outputs.SERVICE }}
