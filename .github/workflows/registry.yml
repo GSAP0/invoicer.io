@@ -12,7 +12,6 @@ jobs:
     env:
       REGISTRY: ghcr.io
       IMAGE_NAME: ${{ github.repository }}
-      DOCKER_CONTEXT: .
 
     steps:
       - name: Checkout code
