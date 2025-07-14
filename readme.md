@@ -76,3 +76,21 @@ Then, for each service (e.g., CRM):
 cd services/crm
 mvn spring-boot:run -Dspring-boot.run.profiles=dev
 ```
+
+```bash
+docker compose -f docker-compose.full.yml build
+```
+
+```bash
+docker tag invoicer-discovery-server ghcr.io/gsap0/invoicer-discovery-server:latest
+docker tag invoicer-api-gateway ghcr.io/gsap0/invoicer-api-gateway:latest
+docker tag invoicer-crm-service ghcr.io/gsap0/invoicer-crm-service:latest
+docker tag invoicer-frontend ghcr.io/gsap0/invoicer-frontend:latest
+```
+
+```bash
+docker push ghcr.io/gsap0/invoicer-crm-service:latest
+docker push ghcr.io/gsap0/invoicer-discovery-server:latest
+docker push ghcr.io/gsap0/invoicer-api-gateway:latest
+docker push ghcr.io/gsap0/invoicer-frontend:latest
+```
