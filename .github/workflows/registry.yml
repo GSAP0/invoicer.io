@@ -2,12 +2,6 @@ name: Deploy Invoicer Service
 
 on:
   push:
-    paths:
-      - 'services/**'
-      - 'common/**'
-      - 'gateway/**'
-      - 'docker/**'
-      - '.github/workflows/**'
     branches:
       - main
 
