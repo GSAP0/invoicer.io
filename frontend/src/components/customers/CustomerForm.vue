@@ -45,13 +45,12 @@
           />
         </n-form-item>
       </n-gi>
-
-      <n-gi :span="2">
-        <n-form-item label="Notes" path="notes">
-          <n-input
-            v-model:value="form.notes"
-            type="textarea"
-            placeholder="Optional internal notes"
+      <n-gi>
+        <n-form-item label="Status" path="status">
+          <n-select
+            v-model:value="form.status"
+            :options="statusOptions"
+            placeholder="Select status"
           />
         </n-form-item>
       </n-gi>
@@ -127,7 +126,7 @@ const form = reactive({
   company: '',
   taxId: '',
   country: '',
-  notes: '',
+  status: 'active',
   addresses: [
     {
       street: '',
@@ -160,6 +159,12 @@ const countryOptions = [
   {label: 'USA', value: 'US'},
   {label: 'Germany', value: 'DE'},
   {label: 'UK', value: 'UK'}
+]
+
+const statusOptions = [
+  {label: 'Active', value: 'ACTIVE'},
+  {label: 'Inactive', value: 'INACTIVE'},
+  {label: 'Blacklisted', value: 'BLACKLISTED'},
 ]
 
 function createAddress() {

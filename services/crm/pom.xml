@@ -11,7 +11,13 @@
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
+  <properties>
+    <org.mapstruct.version>1.6.3</org.mapstruct.version>
+  </properties>
+
   <artifactId>crm-service</artifactId>
+  <packaging>jar</packaging>
+  <version>3.2.5</version>
 
   <dependencies>
     <!-- ✅ Web REST API -->
@@ -50,16 +56,22 @@
     </dependency>
 
     <!-- ✅ Shared commons module -->
-    <dependency>
-      <groupId>io.invoicer</groupId>
-      <artifactId>commons</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>io.invoicer</groupId>-->
+<!--      <artifactId>commons</artifactId>-->
+<!--      <version>1.0.0-SNAPSHOT</version>-->
+<!--    </dependency>-->
 
     <!-- Optional: for validation annotations like @NotBlank -->
     <dependency>
       <groupId>jakarta.validation</groupId>
       <artifactId>jakarta.validation-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct</artifactId>
+      <version>${org.mapstruct.version}</version>
     </dependency>
   </dependencies>
 
@@ -67,8 +79,36 @@
     <plugins>
       <!-- Needed to generate fat JAR -->
       <plugin>
+        <version>3.2.5</version>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <source>1.8</source> <!-- depending on your project -->
+          <target>1.8</target> <!-- depending on your project -->
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.mapstruct</groupId>
+              <artifactId>mapstruct-processor</artifactId>
+              <version>${org.mapstruct.version}</version>
+            </path>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>1.18.32</version>
+            </path>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok-mapstruct-binding</artifactId>
+              <version>0.2.0</version>
+            </path>
+            <!-- other annotation processors -->
+          </annotationProcessorPaths>
+        </configuration>
       </plugin>
     </plugins>
   </build>

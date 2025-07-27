@@ -11,7 +11,7 @@
 
   <!-- 👇 All modules included here -->
   <modules>
-    <module>commons</module>
+<!--    <module>commons</module>-->
 	<module>gateway</module>
 	<module>discovery-server</module>
 <!--    <module>services/auth</module>-->

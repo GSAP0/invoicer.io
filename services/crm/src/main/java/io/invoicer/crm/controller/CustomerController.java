@@ -1,48 +1,41 @@
 package io.invoicer.crm.controller;
 
-import io.invoicer.crm.dto.CustomerDto;
-import io.invoicer.crm.model.Customer;
+import io.invoicer.crm.dto.customer.CustomerDTO;
 import io.invoicer.crm.service.CustomerService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
-@RestController
-@RequestMapping("/customers")
-@RequiredArgsConstructor
+@Controller
+@RequestMapping("customers")
 public class CustomerController {
 
     private final CustomerService customerService;
 
-    @PostMapping
-    public ResponseEntity<Customer> create(@Validated @RequestBody CustomerDto dto) {
-        return ResponseEntity.ok(customerService.create(dto));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Customer> getById(@PathVariable("id") String id) {
-        Optional<Customer> c = customerService.getById(id);
-        return c.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public CustomerController(@Autowired CustomerService customerService){
+        this.customerService = customerService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Customer>> getAll() {
-        return ResponseEntity.ok(customerService.getAll());
+    public ResponseEntity<List<CustomerDTO>> findAll(){
+        return ResponseEntity.ok(customerService.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CustomerDTO> show(@PathVariable("id") long id){
+        return ResponseEntity.ok(customerService.show(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<CustomerDTO> create(@RequestBody CustomerDTO customerDTO){
+        return ResponseEntity.created(null).body(customerService.create(customerDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Customer> update(@PathVariable("id") String id,
-                                           @Validated @RequestBody CustomerDto dto) {
-        return ResponseEntity.ok(customerService.update(id, dto));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") String id) {
-        customerService.delete(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<CustomerDTO> update(@PathVariable("id") long id, @RequestBody CustomerDTO customerDTO){
+        return ResponseEntity.ok(customerService.update(customerDTO));
     }
 }
