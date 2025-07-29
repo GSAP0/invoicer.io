@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.util.List;
 
 @Data
 @Getter
@@ -18,9 +17,7 @@ public class CustomerDTO {
     public String phone;
     public String company;
     public String taxId;
-    public String vatNumber;
     public String country;
-    public String language;
     public Customer.Status status = Customer.Status.ACTIVE;
     private Instant createdAt;
     private Instant updatedAt;

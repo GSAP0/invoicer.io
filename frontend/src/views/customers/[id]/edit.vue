@@ -9,7 +9,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getCustomerById, updateCustomer } from '@/api/customers'
-import CustomerForm from '@/components/customers/CustomerForm.vue'
+import CustomerForm from '@/components/customers/form/CustomerForm.vue'
 import { useMessage } from 'naive-ui'
 
 const route = useRoute()

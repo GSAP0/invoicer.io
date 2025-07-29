@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import CustomerForm from '@/components/customers/CustomerForm.vue'
+import CustomerForm from '@/components/customers/form/CustomerForm.vue'
 import {useRouter} from 'vue-router'
 import {useLoadingBar, useMessage} from 'naive-ui'
 import {createCustomer} from '@/api/customers'
@@ -17,10 +17,15 @@ const loadingBar = useLoadingBar()
 
 async function handleSubmit(data) {
   loadingBar.start()
-  await createCustomer(data)
-  message.success('Customer created')
-  loadingBar.finish()
-  await router.push('/customers')
+  try {
+    await createCustomer(data)
+    message.success('Customer created')
+    await router.push('/customers')
+  }catch(e){
+    message.error(e.message)
+  }finally {
+    loadingBar.finish()
+  }
 }
 
 function goBack() {

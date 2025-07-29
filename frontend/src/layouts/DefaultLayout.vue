@@ -1,5 +1,5 @@
 <template>
-  <n-layout has-sider position="absolute">
+  <n-layout has-sider position="absolute" content-style="">
     <n-layout-sider
       bordered
       width="220"
@@ -24,8 +24,8 @@
       </div>
     </n-layout-sider>
 
-    <n-layout>
-      <n-layout-content style="padding: 1rem">
+    <n-layout content-style="background: #fafafa">
+      <n-layout-content style="padding: 1rem;background: #fafafa;" content-style="background: #fafafa">
         <slot></slot>
       </n-layout-content>
     </n-layout>

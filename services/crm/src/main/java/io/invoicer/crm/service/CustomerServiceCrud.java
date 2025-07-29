@@ -12,12 +12,12 @@ public abstract class CustomerServiceCrud {
 
     private final CustomerRepository customerRepository;
 
-    public List<CustomerDTO> findAll(){
-        return this.customerRepository.findAll().stream().map(CustomerMapper.INSTANCE::toDTO).collect(Collectors.toList());
-    }
-
     public CustomerServiceCrud(CustomerRepository customerRepository){
         this.customerRepository = customerRepository;
+    }
+
+    public List<CustomerDTO> findAll(){
+        return this.customerRepository.findAll().stream().map(CustomerMapper.INSTANCE::toDTO).collect(Collectors.toList());
     }
 
     public CustomerDTO show(long id){
