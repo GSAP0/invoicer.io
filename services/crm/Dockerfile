@@ -6,5 +6,6 @@ RUN mvn -pl services/crm -am clean package -DskipTests
 FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
 COPY --from=builder /build/services/crm/target/*.jar app.jar
+COPY --from=builder /build/services/crm/src/java/resources/application.properties application.properties
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
