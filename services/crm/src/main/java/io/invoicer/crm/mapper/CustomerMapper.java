@@ -5,14 +5,10 @@ import io.invoicer.crm.dto.customer.CustomerTagDTO;
 import io.invoicer.crm.model.Customer;
 import io.invoicer.crm.model.CustomerTag;
 import io.invoicer.crm.model.Tag;
-import io.invoicer.crm.repository.ContactPersonRepository;
-import io.invoicer.crm.repository.CustomerRepository;
 import io.invoicer.crm.repository.TagRepository;
 import org.mapstruct.AfterMapping;
-import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -20,20 +16,23 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Mapper(uses = {
+@Mapper(componentModel = "spring", uses = {
         AddressMapper.class,
         NoteMapper.class,
         ContactPersonMapper.class,
         TagMapper.class
 })
-public interface CustomerMapper {
-    CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
+public abstract class CustomerMapper {
 
-    CustomerDTO toDTO(Customer customer);
-    Customer toEntity(CustomerDTO customerDTO);
+    @Autowired
+    protected TagRepository tagRepository;
+
+    public abstract CustomerDTO toDTO(Customer customer);
+
+    public abstract Customer toEntity(CustomerDTO customerDTO);
 
     @AfterMapping
-    default void afterMapping(@MappingTarget Customer customer, CustomerDTO customerDTO, @Context TagRepository tagRepository) {
+    public void afterMapping(@MappingTarget Customer customer, CustomerDTO customerDTO) {
         customer.getAddresses().forEach(address -> address.setCustomer(customer));
         customer.getNotes().forEach(note -> note.setCustomer(customer));
         customer.getContactPeople().forEach(person -> person.setCustomer(customer));
@@ -62,7 +61,7 @@ public interface CustomerMapper {
     }
 
     @AfterMapping
-    default void afterMappingDto(@MappingTarget CustomerDTO customerDTO, Customer customer) {
+    public void afterMappingDto(@MappingTarget CustomerDTO customerDTO, Customer customer) {
         customerDTO.setTagList(customer.getTags().stream().map(ct -> CustomerTagDTO
                 .builder()
                 .id(ct.getTag().getId())

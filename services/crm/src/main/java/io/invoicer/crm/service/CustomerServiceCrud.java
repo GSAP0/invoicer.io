@@ -11,31 +11,33 @@ import java.util.stream.Collectors;
 public abstract class CustomerServiceCrud {
 
     private final CustomerRepository customerRepository;
+    private final CustomerMapper customerMapper;
 
-    public CustomerServiceCrud(CustomerRepository customerRepository){
+    public CustomerServiceCrud(CustomerRepository customerRepository, CustomerMapper customerMapper){
         this.customerRepository = customerRepository;
+        this.customerMapper = customerMapper;
     }
 
     public List<CustomerDTO> findAll(){
-        return this.customerRepository.findAll().stream().map(CustomerMapper.INSTANCE::toDTO).collect(Collectors.toList());
+        return this.customerRepository.findAll().stream().map(customerMapper::toDTO).collect(Collectors.toList());
     }
 
     public CustomerDTO show(long id){
         Customer c =  customerRepository.findById(id).orElseThrow();
-        return CustomerMapper.INSTANCE.toDTO(c);
+        return customerMapper.toDTO(c);
     }
 
     public CustomerDTO create(CustomerDTO customerDTO) {
-        Customer customer = CustomerMapper.INSTANCE.toEntity(customerDTO);
-        return CustomerMapper.INSTANCE.toDTO(customerRepository.save(customer));
+        Customer customer = customerMapper.toEntity(customerDTO);
+        return customerMapper.toDTO(customerRepository.save(customer));
     }
 
     public void delete(CustomerDTO model) {
     }
 
     public CustomerDTO update(CustomerDTO customerDTO) {
-        Customer customer = CustomerMapper.INSTANCE.toEntity(customerDTO);
-        return CustomerMapper.INSTANCE.toDTO(customerRepository.save(customer));
+        Customer customer = customerMapper.toEntity(customerDTO);
+        return customerMapper.toDTO(customerRepository.save(customer));
     }
 
 }
