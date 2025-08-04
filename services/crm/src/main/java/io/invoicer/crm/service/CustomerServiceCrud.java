@@ -30,13 +30,12 @@ public abstract class CustomerServiceCrud {
         return CustomerMapper.INSTANCE.toDTO(customerRepository.save(customer));
     }
 
+    public void delete(CustomerDTO model) {
+    }
+
     public CustomerDTO update(CustomerDTO customerDTO) {
         Customer customer = CustomerMapper.INSTANCE.toEntity(customerDTO);
         return CustomerMapper.INSTANCE.toDTO(customerRepository.save(customer));
     }
-
-    public void delete(CustomerDTO model) {
-    }
-
 
 }

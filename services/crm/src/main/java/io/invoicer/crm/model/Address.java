@@ -17,7 +17,7 @@ public class Address {
     private Long id;
 
     @Column(nullable = false)
-    private String label; // e.g., "Billing", "Shipping"
+    private String label;
 
     @Column(nullable = false)
     private String street;

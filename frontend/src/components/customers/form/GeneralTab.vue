@@ -46,20 +46,28 @@
         </n-form-item>
       </n-gi>
     </n-grid>
+    <n-dynamic-tags v-model:value="form.tagList" @create="onCreateTags"/>
   </div>
 </template>
 <script setup lang="ts">
 import {storeToRefs} from "pinia";
-import { useCustomerStore } from "@/stores/customers"
+import {useCustomerStore} from "@/stores/customers"
 
 const customerStore = useCustomerStore()
-const { countryOptions } = customerStore
-const { form } = storeToRefs(customerStore)
+const {countryOptions} = customerStore
+const {form} = storeToRefs(customerStore)
 
 const statusOptions = [
   {label: 'Active', value: 'ACTIVE'},
   {label: 'Inactive', value: 'INACTIVE'},
   {label: 'Blacklisted', value: 'BLACKLISTED'},
 ]
+
+function onCreateTags(label){
+  return {
+    label,
+    id: null,
+  };
+}
 
 </script>

@@ -9,6 +9,11 @@
       <template #default="{ value, index }">
         <n-grid x-gap="12" :cols="6" responsive="self">
           <n-gi span="1 m:2 l:4">
+            <n-form-item label="Label" :path="`addresses[${index}].label`">
+              <n-input v-model:value="value.label" placeholder="Label of the address"/>
+            </n-form-item>
+          </n-gi>
+          <n-gi span="1 m:2 l:4">
             <n-form-item :label="'Street'" :path="`addresses[${index}].street`">
               <n-input v-model:value="value.street" placeholder="Street address"/>
             </n-form-item>
@@ -33,8 +38,8 @@
             </n-form-item>
           </n-gi>
           <n-gi :span="2">
-            <n-form-item :label="'Primary Address'" :path="`addresses[${index}].isPrimary`">
-            <n-checkbox v-model:checked="value.isPrimary"
+            <n-form-item :label="'Primary Address'" :path="`addresses[${index}].primaryAddress`">
+            <n-checkbox v-model:checked="value.primaryAddress"
                         @update:checked="() => setPrimary(index)">
             </n-checkbox>
             </n-form-item>
@@ -55,17 +60,18 @@ const { form } = storeToRefs(customerStore)
 
 function createAddress() {
   return {
+    label: '',
     street: '',
     city: '',
     postalCode: '',
     country: '',
-    isPrimary: false
+    primaryAddress: false
   }
 }
 
 function setPrimary(index) {
   form.value.addresses.forEach((addr, i) => {
-    addr.isPrimary = i === index
+    addr.primaryAddress = i === index
   })
 }
 </script>

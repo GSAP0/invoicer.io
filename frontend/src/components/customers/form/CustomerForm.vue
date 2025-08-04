@@ -17,9 +17,13 @@
       <n-tab-pane name="address" tab="Addresses">
         <AddressTab></AddressTab>
       </n-tab-pane>
+      <n-tab-pane name="notes" tab="Notes">
+        <NotesTab></NotesTab>
+      </n-tab-pane>
+      <n-tab-pane name="contacts" tab="Contacts">
+        <ContactsTab></ContactsTab>
+      </n-tab-pane>
     </n-tabs>
-
-
       <div class="form-actions">
         <n-button @click="$emit('cancel')">Cancel</n-button>
         <n-button type="primary" @click="handleSubmit">Save</n-button>
@@ -33,6 +37,8 @@ import {useMessage} from "naive-ui";
 import { useCustomerStore } from "@/stores/customers.js";
 import GeneralTab from "@/components/customers/form/GeneralTab.vue";
 import AddressTab from "@/components/customers/form/AddressTab.vue";
+import NotesTab from "@/components/customers/form/NotesTab.vue";
+import ContactsTab from "@/components/customers/form/ContactsTab.vue";
 
 const props = defineProps({
   modelValue: Object

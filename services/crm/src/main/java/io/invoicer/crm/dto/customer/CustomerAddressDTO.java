@@ -1,5 +1,8 @@
 package io.invoicer.crm.dto.customer;
 
+import lombok.Data;
+
+@Data
 public class CustomerAddressDTO {
     public Long id;
     public String label;
@@ -9,5 +12,5 @@ public class CustomerAddressDTO {
     public String postalCode;
     public String country;
     public boolean primaryAddress;
-    public Long customer_id;
+    public Long customerId;
 }

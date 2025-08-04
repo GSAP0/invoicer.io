@@ -6,11 +6,12 @@ import io.invoicer.crm.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class CustomerService extends CustomerServiceCrud implements IBasicCrud<CustomerDTO, Customer>{
 
-    public CustomerService(@Autowired CustomerRepository customerRepository){
+
+    public CustomerService(@Autowired CustomerRepository customerRepository) {
         super(customerRepository);
     }
-
 }

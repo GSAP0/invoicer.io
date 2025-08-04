@@ -2,14 +2,12 @@ package io.invoicer.crm.dto.customer;
 
 import io.invoicer.crm.model.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
-@Getter
-@Setter
 public class CustomerDTO {
     public Long id;
     public String name;
@@ -21,8 +19,8 @@ public class CustomerDTO {
     public Customer.Status status = Customer.Status.ACTIVE;
     private Instant createdAt;
     private Instant updatedAt;
-//    private List<CustomerAddressDTO> addresses;
-//    private List<CustomerContactPersonDTO> contactPeople;
-//    private List<CustomerNoteDTO> notes;
-//    private List<CustomerTagDTO> tags;
+    private List<CustomerAddressDTO> addresses = new ArrayList<>();
+    private List<CustomerContactPersonDTO> contactPeople = new ArrayList<>();
+    private List<CustomerNoteDTO> notes = new ArrayList<>();
+    private List<CustomerTagDTO> tagList = new ArrayList<>();
 }
