@@ -1,11 +1,7 @@
-FROM maven:3.9.6-eclipse-temurin-21 AS builder
-WORKDIR /build
-COPY . .
-RUN mvn -pl services/crm -am clean package -DskipTests
-
 FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
-COPY --from=builder /build/services/crm/target/*.jar app.jar
-COPY --from=builder /build/services/crm/src/java/resources/application.properties application.properties
+COPY services/crm/target/*.jar app.jar
+COPY services/crm/src/main/resources/application.yml application.yml
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar", "--spring.config.location=file:/app/application.yml"]
+
