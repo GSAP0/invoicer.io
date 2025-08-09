@@ -6,7 +6,7 @@ spring:
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins: "*"
+            allowedOrigins: "https://app.invoicer-app.com/"
             allowedMethods:
               - GET
               - POST
